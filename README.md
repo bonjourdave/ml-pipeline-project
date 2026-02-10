@@ -10,7 +10,8 @@ This project is to design end-to-end MLOps pipeline predicting CrossFit athlete 
 2. [Project Structure](#project-structure)
 3. [Architecture](#architecture)
 4. [Quick Start](#quick-start)
-5. [Results](#results)
+5. [Pipeline](#pipeline)
+6. [Results](#results)
 
 For detailed usage instructions see [USAGE.md](USAGE.md).
 
@@ -160,6 +161,14 @@ Trigger the `test_connections` DAG in the Airflow UI — both the MLFlow and Fea
 ### 6. Run the training pipeline
 
 Trigger `crossfit_training_pipeline` manually. All four training tasks should complete green, with results visible in MLFlow under the `crossfit_athlete_airflow_run` experiment.
+
+---
+
+## Pipeline
+
+The Airflow DAG runs four training tasks in parallel after preprocessing and feature engineering complete. Each task corresponds to a unique combination of feature version and hyperparameters, and logs independently to MLFlow.
+
+![Airflow training pipeline DAG](images/airflow_ml_pipeline.png)
 
 ---
 
