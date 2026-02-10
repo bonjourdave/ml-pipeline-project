@@ -1,0 +1,22 @@
+# This file allows you to configure Airflow Connections, Pools, and Variables in a single place for local development only.
+# NOTE: json dicts can be added to the conn_extra field as yaml key value pairs. See the example below.
+
+# For more information, refer to our docs: https://www.astronomer.io/docs/astro/cli/develop-project#configure-airflow_settingsyaml-local-development-only
+# For questions, reach out to: https://support.astronomer.io
+# For issues create an issue ticket here: https://github.com/astronomer/astro-cli/issues
+
+airflow:
+  connections:
+    - conn_id: mlflow_tracking
+      conn_type: http
+      host: mlflow-server
+      port: 5000
+      description: MLFlow tracking server
+
+  variables:
+    - variable_name: FEAST_REPO_PATH
+      variable_value: /usr/local/airflow/include/feast/repo/feature_repo
+      description: Path to Feast feature repository
+    - variable_name: MLFLOW_TRACKING_URI
+      variable_value: http://mlflow-server:5000
+      description: MLFlow tracking server URI

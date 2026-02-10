@@ -1,0 +1,8 @@
+networks:
+  ml-network:
+    external: true
+
+services:
+  scheduler:
+    networks:
+      - ml-network

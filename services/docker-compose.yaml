@@ -1,0 +1,48 @@
+services:
+  mlflow-db:
+    image: postgres:15
+    container_name: mlflow-postgres
+    environment:
+      POSTGRES_USER: mlflow
+      POSTGRES_PASSWORD: mlflow
+      POSTGRES_DB: mlflow
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - ml-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mlflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mlflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.mlflow
+    container_name: mlflow-server
+    depends_on:
+      mlflow-db:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+    environment:
+      - MLFLOW_BACKEND_STORE_URI=postgresql://mlflow:mlflow@mlflow-db:5432/mlflow
+      - MLFLOW_ARTIFACT_ROOT=/mlflow/artifacts
+    volumes:
+      - ./mlflow-artifacts:/mlflow/artifacts
+      - ../data:/mlflow/data:ro
+    networks:
+      - ml-network
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri postgresql://mlflow:mlflow@mlflow-db:5432/mlflow
+      --default-artifact-root mlflow-artifacts:/
+      --serve-artifacts
+
+networks:
+  ml-network:
+    name: ml-network
+    driver: bridge

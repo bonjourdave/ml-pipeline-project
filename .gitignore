@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints
+notebooks/scratch/
+
+# Airflow (Astro managed)
+.astro/
+airflow_settings.yaml.bak
+
+# MLFlow
+mlruns/
+
+# Feast / SQLite runtime artifacts
+*.db
+
+# Data and outputs
+data/processed/
+*.parquet
+*.csv
+emissions/
+
+# Environment
+.env.local
+
+# Bind volumes
+services/postgres-data/
+services/mlflow-artifacts/
